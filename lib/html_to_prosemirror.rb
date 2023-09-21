@@ -22,8 +22,9 @@ module HtmlToProsemirror
   class Error < StandardError; end
   # Your code goes here...
   class Renderer
-    def initialize()
-      @storedMarks = []
+    def initialize(case_type: :snake)
+      @case_type = case_type
+      @stored_marks = []
       @marks = [
         HtmlToProsemirror::Marks::Bold,
         HtmlToProsemirror::Marks::Code,
@@ -77,11 +78,14 @@ module HtmlToProsemirror
               content: render_children(child),
             })
           end
-          if (@storedMarks.count > 0)
+          if (@stored_marks.count > 0)
               item = item.merge({
-                marks: @storedMarks,
+                marks: @stored_marks,
               })
-              @storedMarks = [];
+              @stored_marks = [];
+          end
+          if (@case_type === :lower_camel)
+            item = item.merge(type: item[:type].gsub(/_([a-z])/) { $1.upcase })
           end
           # if (child_node.wrapper)
           #   item['content'] = [
@@ -95,7 +99,7 @@ module HtmlToProsemirror
 
         child_mark = get_matching_mark(child)
         if (child_mark)
-          @storedMarks.push(child_mark.data())
+          @stored_marks.push(child_mark.data())
           if (child.children.length > 0)
             nodes = nodes + render_children(child)
           end
