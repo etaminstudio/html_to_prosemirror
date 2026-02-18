@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Takes HTML and outputs ProseMirror compatible JSON.}
   spec.description   = %q{Takes HTML and outputs ProseMirror compatible JSON.}
-  spec.homepage      = "https://github.com/inputhq/html_to_prosemirror"
+  spec.homepage      = "https://github.com/etaminstudio/html_to_prosemirror"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
