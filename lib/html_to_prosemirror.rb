@@ -24,7 +24,6 @@ module HtmlToProsemirror
   class Renderer
     def initialize(case_type: :snake)
       @case_type = case_type
-      @stored_marks = []
       @marks = [
         HtmlToProsemirror::Marks::Bold,
         HtmlToProsemirror::Marks::Code,
@@ -61,7 +60,7 @@ module HtmlToProsemirror
     #   return @document.search('body')[0];
     # end
 
-    def render_children(node)
+    def render_children(node, inherited_marks = [])
       nodes = []
       node.children.each do |child|
         child_node = get_matching_node(child)
@@ -69,20 +68,19 @@ module HtmlToProsemirror
           item = child_node.data()
           if (item === nil)
             if (child.children.length > 0)
-              nodes = nodes + render_children(child)
+              nodes = nodes + render_children(child, inherited_marks)
             end
             next
           end
           if (child.children.length > 0)
             item = item.merge({
-              content: render_children(child),
+              content: render_children(child, inherited_marks),
             })
           end
-          if (@stored_marks.count > 0)
-              item = item.merge({
-                marks: @stored_marks,
-              })
-              @stored_marks = [];
+          if (inherited_marks.count > 0)
+            item = item.merge({
+              marks: inherited_marks,
+            })
           end
           if (@case_type === :lower_camel)
             item = item.merge(type: item[:type].gsub(/_([a-z])/) { $1.upcase })
@@ -99,9 +97,8 @@ module HtmlToProsemirror
 
         child_mark = get_matching_mark(child)
         if (child_mark)
-          @stored_marks.push(child_mark.data())
           if (child.children.length > 0)
-            nodes = nodes + render_children(child)
+            nodes = nodes + render_children(child, inherited_marks + [child_mark.data()])
           end
         end
       end
@@ -132,11 +129,12 @@ module HtmlToProsemirror
       # 1.2. Remove javascript comments e.g. /* */ and // \/\*[^\*]*\*\/ and ^(\t|\s)*\/\/.*
       # 3. Replace all carrier return and all tabs by a single space gsub(/(\n|\t)/, ' ').
       # 4. Replace any consecutive spaces by a single space gsub(/\s{2,}/, ' ')
-      # 5. Remove space between tags gsub(/>\s+</, '><').strip.
+      # 5. Collapse space between tags to a single space gsub(/>\s+</, '> <').strip.
       html.gsub(/(<!--(\w|\s|:|!|#|<|>|'|"|=|;|,|\.|\?)*-->|\/\*[^\*]*\*\/|^(\t|\s)*\/\/.*)/, '').
         gsub(/(\n|\t)/, ' ').
         gsub(/\s{2,}/, ' ').
-        gsub(/>\s+</, '><').strip
+        gsub(/>(\s+)<(?!\/?(a|abbr|b|bdi|br|cite|code|dfn|em|i|img|kbd|mark|q|s|samp|small|span|strong|sub|sup|time|u|var))/i) { '><' }.
+        gsub(/>\s+</, '> <').strip
     end
   end
 end
