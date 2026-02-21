@@ -5,6 +5,7 @@ require "html_to_prosemirror/marks/code"
 require "html_to_prosemirror/marks/italic"
 require "html_to_prosemirror/marks/link"
 require "html_to_prosemirror/nodes/node"
+require "html_to_prosemirror/nodes/blockquote"
 require "html_to_prosemirror/nodes/bullet_list"
 require "html_to_prosemirror/nodes/code_block_wrapper"
 require "html_to_prosemirror/nodes/code_block"
@@ -31,6 +32,7 @@ module HtmlToProsemirror
         HtmlToProsemirror::Marks::Link
       ]
       @nodes = [
+        HtmlToProsemirror::Nodes::Blockquote,
         HtmlToProsemirror::Nodes::BulletList,
         HtmlToProsemirror::Nodes::CodeBlockWrapper,
         HtmlToProsemirror::Nodes::CodeBlock,
