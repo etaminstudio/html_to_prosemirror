@@ -6,8 +6,8 @@ require "html_to_prosemirror/version"
 Gem::Specification.new do |spec|
   spec.name          = "html_to_prosemirror"
   spec.version       = HtmlToProsemirror::VERSION
-  spec.authors       = ["Brian Kimball"]
-  spec.email         = ["bvkimball@gmail.com"]
+  spec.authors       = ["Hans Lemuet", "Brian Kimball"]
+  spec.email         = ["hans@etamin.studio", "bvkimball@gmail.com"]
 
   spec.summary       = %q{Deprecated: use the prosemirror gem. Takes HTML and outputs ProseMirror compatible JSON.}
   spec.description   = %q{Deprecated in favor of the prosemirror gem. Takes HTML and outputs ProseMirror compatible JSON.}
