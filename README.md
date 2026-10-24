@@ -1,5 +1,10 @@
 # HtmlToProsemirror
 
+> [!WARNING]
+> **This gem is deprecated.** Use [`prosemirror`](https://github.com/etaminstudio/prosemirror) instead, from the same maintainers: `Prosemirror.from_html(html).to_h`. Its JSON follows the schema, as Tiptap's `generateJSON` does, it reads more elements and inline styles, and it also imports Markdown and renders HTML with the same schema. See the [migration guide](https://github.com/etaminstudio/prosemirror/blob/main/MIGRATING.md).
+>
+> This gem won't get new features.
+
 Takes HTML and outputs ProseMirror compatible JSON.
 
 A logical port to Ruby from https://github.com/scrumpy/html-to-prosemirror
